@@ -5,14 +5,15 @@ function StudentList() {
   const [students, setStudents] = useState([]);
   const [newStudent, setNewStudent] = useState({ name: "", id: "", age: "" });
 
-  const [editingStudent, setEditingStudent] = useState(null);
+  const API_BASE = "https://backend-production-7f5dc.up.railway.app";
 
   useEffect(() => {
     fetchStudent();
   }, []);
+
   const fetchStudent = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/students");
+      const response = await axios.get(`${API_BASE}/students`);
       setStudents(response.data);
     } catch (error) {
       console.error(error);
@@ -25,7 +26,7 @@ function StudentList() {
     );
     if (!confirmDelete) return;
     try {
-      await axios.delete(`http://localhost:8080/students/${id}`);
+      await axios.delete(`${API_BASE}/students/${id}`);
       fetchStudent();
       alert("Xoá thành công");
     } catch (error) {
@@ -38,7 +39,7 @@ function StudentList() {
         alert("Vui lòng nhập đầy đủ thông tin sinh viên!");
         return;
       }
-      const response = await axios.post("http://localhost:8080/students", [
+      const response = await axios.post(`${API_BASE}/students`, [
         newStudent,
       ]);
       setStudents([...students, response.data]);
